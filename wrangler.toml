@@ -1,11 +1,30 @@
-name = "domain-check"
+# 项目名称
+name = "domain-check"         # 英文项目名称（保持不变）
+# name = "域名监控"            # Cloudflare 不支持中文项目名，不能使用
+
+# 入口文件
 main = "src/index.js"
+
+# Cloudflare Worker 兼容日期
 compatibility_date = "2025-11-17"
+
+# 保留自定义变量
 keep_vars = true
 
-[[kv_namespaces]]
-binding = "DOMAIN_KV" 
-id = "ae781b92d2c14a55a32f7b094beb9ade" # 替换成你实际的 KV ID
 
+###########################################
+##  KV 命名空间绑定
+###########################################
+# 一个 Worker 如果要访问 KV 空间，必须通过 kv_namespaces 绑定
+[[kv_namespaces]]
+binding = "DOMAIN_KV"          # Worker 内部使用的变量名称（保持英文）
+id = "9ad4156eb5ab4317be82043c7ec0b438"   # ⚠️换成你自己的 KV ID
+
+
+###########################################
+##  定时任务 Cron 触发器
+###########################################
 [triggers]
-crons = ["0 1,13 * * *"] # 北京时间 9:00 和 21:00
+# UTC 时间：凌晨 1 点 和 下午 13 点
+# 换算为北京时间（+8）：上午 9 点、晚上 21 点
+crons = ["0 1,13 * * *"]
